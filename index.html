@@ -609,14 +609,14 @@
     <div class="section-title">Fundraising distribution by org</div>
     <div class="chart-wrap">
       <div class="chart-legend">
-        <div class="item"><span class="sw" style="background: var(--ysgd-gray);"></span>2024 (178 orgs)</div>
-        <div class="item"><span class="sw" style="background: var(--ysgd-navy);"></span>2025 (244 orgs)</div>
+        <div class="item"><span class="sw" style="background: var(--ysgd-gray);"></span>2024 (137 orgs that raised &gt; $0)</div>
+        <div class="item"><span class="sw" style="background: var(--ysgd-navy);"></span>2025 (157 orgs that raised &gt; $0)</div>
       </div>
       <div class="chart-canvas-wrap">
         <canvas id="distChart" role="img" aria-label="Grouped bar chart showing count of organizations in each fundraising bucket for 2024 and 2025.">Distribution by bucket</canvas>
       </div>
       <div style="margin-top: 10px; font-size: 12px; color: var(--text-tertiary); text-align: center; font-style: italic;">
-        The long tail grew on both ends: more inactive signups (raising $0) AND more top-tier fundraisers ($100K+).
+        Among organizations that raised money, the top tier grew: orgs raising $100K+ went from 8 to 15.
       </div>
     </div>
   </div>
@@ -937,9 +937,9 @@
       '<div style="padding: 3rem; text-align: center; color: var(--text-secondary);">Unable to load county map topology. Please check your internet connection and refresh.</div>';
   });
 
-  const distLabels = ['$0', '$1–$999', '$1K–$5K', '$5K–$10K', '$10K–$25K', '$25K–$50K', '$50K–$100K', '$100K+'];
-  const dist2024 = [41, 58, 26, 8, 13, 14, 10, 8];
-  const dist2025 = [87, 51, 33, 14, 19, 17, 8, 15];
+  const distLabels = ['$1–$999', '$1K–$5K', '$5K–$10K', '$10K–$25K', '$25K–$50K', '$50K–$100K', '$100K+'];
+  const dist2024 = [58, 26, 8, 13, 14, 10, 8];
+  const dist2025 = [51, 33, 14, 19, 17, 8, 15];
 
   new Chart(document.getElementById('distChart'), {
     type: 'bar',
