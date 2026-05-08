@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorado Youth Sports Giving Day — 2024 vs 2025 Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ysgd-navy: #11294d;
+    --ysgd-navy-dark: #0a1a33;
+    --ysgd-red: #ed1a3b;
+    --ysgd-yellow: #f9ed32;
+    --ysgd-gray: #a5b1bb;
+    --ysgd-gray-light: #e9edf0;
+    --ysgd-gray-bg: #f5f7f9;
+    --text-primary: #11294d;
+    --text-secondary: #5a6a7a;
+    --text-tertiary: #8a96a3;
+    --border: rgba(17, 41, 77, 0.12);
+    --border-strong: rgba(17, 41, 77, 0.25);
+    --success: #0f6e56;
+    --success-bg: #e1f5ee;
+    --danger: #a32d2d;
+    --danger-bg: #fceaea;
+    --highlight: #633806;
+    --highlight-bg: #faeeda;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 300;
+    background: var(--ysgd-gray-bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 2px solid var(--ysgd-navy);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header h1 {
+    font-family: 'Anton', 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    margin: 0;
+    color: var(--ysgd-navy);
+    text-transform: uppercase;
+  }
+  .header .sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    font-weight: 400;
+  }
+  .header .meta {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-align: right;
+  }
+  .header .meta .big {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    color: var(--ysgd-navy);
+    letter-spacing: 0.02em;
+  }
+
+  /* Section titles */
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ysgd-navy);
+    margin: 0 0 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 14px;
+    background: var(--ysgd-red);
+  }
+
+  /* KPI grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .kpi {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--ysgd-navy);
+    letter-spacing: 0.01em;
+  }
+  .kpi-value.small {
+    font-size: 22px;
+  }
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    font-weight: 400;
+  }
+  .kpi-sub .up { color: var(--success); font-weight: 500; }
+  .kpi-sub .down { color: var(--danger); font-weight: 500; }
+  .kpi-sub .flat { color: var(--text-secondary); font-weight: 500; }
+  .kpi.accent-red { border-top: 3px solid var(--ysgd-red); }
+  .kpi.accent-navy { border-top: 3px solid var(--ysgd-navy); }
+  .kpi.accent-yellow { border-top: 3px solid var(--ysgd-yellow); }
+  .kpi.accent-gray { border-top: 3px solid var(--ysgd-gray); }
+
+  /* Map panel */
+  .panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    align-items: center;
+  }
+  .btn-group {
+    display: inline-flex;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .btn-group button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border: none;
+    background: white;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .btn-group button + button {
+    border-left: 1px solid var(--border);
+  }
+  .btn-group button:hover {
+    background: var(--ysgd-gray-light);
+  }
+  .btn-group button.active {
+    background: var(--ysgd-navy);
+    color: white;
+  }
+  .current-view {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
+  .map-wrap {
+    width: 100%;
+    background: var(--ysgd-gray-bg);
+    border-radius: 6px;
+    padding: 12px;
+    position: relative;
+    min-height: 460px;
+  }
+  .map-wrap svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .legend-label {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-right: 4px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-swatch {
+    width: 16px;
+    height: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    display: inline-block;
+  }
+  .hover-info {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--ysgd-gray-bg);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    min-height: 44px;
+    border-left: 3px solid var(--ysgd-navy);
+  }
+  .hover-info .county-name {
+    color: var(--ysgd-navy);
+    font-weight: 700;
+  }
+
+  /* County table */
+  .county-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .county-table th {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--ysgd-navy);
+    background: var(--ysgd-gray-bg);
+    cursor: pointer;
+    user-select: none;
+  }
+  .county-table th.num { text-align: right; }
+  .county-table th.sort-asc::after { content: " ▲"; font-size: 9px; color: var(--ysgd-red); }
+  .county-table th.sort-desc::after { content: " ▼"; font-size: 9px; color: var(--ysgd-red); }
+  .county-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+  .county-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .county-table td.name { font-weight: 500; }
+  .county-table tr:hover td {
+    background: var(--ysgd-gray-bg);
+  }
+  .county-table .zero { color: var(--text-tertiary); }
+  .county-table .new-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 6px;
+    background: var(--ysgd-yellow);
+    color: var(--ysgd-navy);
+    border-radius: 3px;
+    margin-left: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Callout cards */
+  .callouts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .callout {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    border-left-width: 5px;
+    border-left-style: solid;
+  }
+  .callout.gains { border-left-color: var(--success); }
+  .callout.drops { border-left-color: var(--ysgd-red); }
+  .callout.new   { border-left-color: var(--ysgd-navy); }
+  .callout-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+  .callout.gains .callout-title { color: var(--success); }
+  .callout.drops .callout-title { color: var(--danger); }
+  .callout.new   .callout-title { color: var(--ysgd-navy); }
+  .callout-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .callout-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 13px;
+  }
+  .callout-list li:last-child {
+    border-bottom: none;
+  }
+  .callout-list .name {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .callout-list .val {
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .callout-list .val.pos { color: var(--success); }
+  .callout-list .val.neg { color: var(--danger); }
+  .callout-footer {
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* Distribution chart */
+  .chart-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .chart-legend {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .chart-legend .item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chart-legend .sw {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+  }
+  .chart-canvas-wrap {
+    position: relative;
+    height: 340px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-align: center;
+  }
+
+  /* Intro strip */
+  .intro-strip {
+    background: var(--ysgd-navy);
+    color: white;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .intro-strip::before {
+    content: "";
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 200px;
+    height: 200px;
+    background: var(--ysgd-red);
+    opacity: 0.08;
+    border-radius: 50%;
+  }
+  .intro-strip .intro-text {
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 400;
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+  .intro-strip .intro-text strong {
+    color: var(--ysgd-yellow);
+    font-weight: 700;
+  }
+  .intro-strip .intro-tag {
+    font-family: 'Anton', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: var(--ysgd-yellow);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .intro-strip .intro-cta {
+    text-align: center;
+    border-left: 2px solid rgba(255,255,255,0.15);
+    padding-left: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .intro-strip .intro-cta .num {
+    font-family: 'Anton', sans-serif;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--ysgd-yellow);
+  }
+  .intro-strip .intro-cta .lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* Impact hero tiles */
+  .impact-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .impact-tile {
+    background: white;
+    border-radius: 8px;
+    padding: 24px 26px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .impact-tile.kids {
+    background: linear-gradient(135deg, var(--ysgd-navy) 0%, #1a3866 100%);
+    color: white;
+    border: none;
+  }
+  .impact-tile.leverage {
+    background: linear-gradient(135deg, #fff8d4 0%, #ffffff 60%);
+    border-top: 4px solid var(--ysgd-yellow);
+  }
+  .impact-tile .impact-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+  .impact-tile.kids .impact-label { color: var(--ysgd-yellow); }
+  .impact-tile.leverage .impact-label { color: var(--highlight); }
+  .impact-tile .impact-num {
+    font-family: 'Anton', sans-serif;
+    font-size: 56px;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+  }
+  .impact-tile.kids .impact-num { color: white; }
+  .impact-tile.leverage .impact-num { color: var(--ysgd-navy); }
+  .impact-tile .impact-context {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 14px;
+  }
+  .impact-tile.kids .impact-context { color: rgba(255,255,255,0.9); }
+  .impact-tile.leverage .impact-context { color: var(--text-secondary); }
+  .impact-tile .impact-context strong {
+    font-weight: 700;
+  }
+  .impact-tile.kids .impact-context strong { color: var(--ysgd-yellow); }
+  .impact-tile.leverage .impact-context strong { color: var(--ysgd-navy); }
+
+  .leverage-bars {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .leverage-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+  }
+  .leverage-bar-row .lbl {
+    width: 110px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .leverage-bar-row .bar-track {
+    flex: 1;
+    height: 18px;
+    background: rgba(17, 41, 77, 0.06);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .leverage-bar-row .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .leverage-bar-row .bar-fill.match { background: var(--ysgd-red); }
+  .leverage-bar-row .bar-fill.raised { background: var(--ysgd-navy); }
+
+  /* Two-year cumulative banner */
+  .cumulative-banner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .cumulative-banner .item {
+    padding: 18px 22px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .cumulative-banner .item:last-child { border-right: none; }
+  .cumulative-banner .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .cumulative-banner .num {
+    font-family: 'Anton', sans-serif;
+    font-size: 30px;
+    color: var(--ysgd-navy);
+    line-height: 1;
+  }
+  .cumulative-banner .sub {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 4px;
+  }
+  .cumulative-banner .title-cell {
+    background: var(--ysgd-navy);
+    color: white;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .cumulative-banner .title-cell .label {
+    color: var(--ysgd-yellow);
+  }
+  .cumulative-banner .title-cell .title-big {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  /* Spotlight card */
+  .spotlight {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0;
+  }
+  .spotlight .spot-visual {
+    background: linear-gradient(135deg, var(--ysgd-navy) 0%, #1a3866 100%);
+    color: white;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .spotlight .spot-visual .tag {
+    font-family: 'Anton', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: var(--ysgd-yellow);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .spotlight .spot-visual .county {
+    font-family: 'Anton', sans-serif;
+    font-size: 38px;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  .spotlight .spot-visual .growth {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+  }
+  .spotlight .spot-visual .arrow {
+    font-size: 32px;
+    color: var(--ysgd-yellow);
+    margin: 8px 0;
+    line-height: 1;
+  }
+  .spotlight .spot-detail {
+    padding: 24px 28px;
+  }
+  .spotlight .spot-detail h4 {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    margin: 0 0 10px 0;
+    color: var(--ysgd-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  .spotlight .spot-detail p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0 0 12px 0;
+  }
+  .spotlight .spot-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .spotlight .spot-stats .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary);
+    margin-bottom: 4px;
+  }
+  .spotlight .spot-stats .stat-val {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    color: var(--ysgd-navy);
+    line-height: 1;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ysgd-navy);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 100;
+    max-width: 260px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .tooltip .tt-name {
+    font-weight: 700;
+    color: var(--ysgd-yellow);
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .tooltip .tt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .tooltip .tt-label { opacity: 0.8; }
+
+  @media (max-width: 960px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .callouts { grid-template-columns: 1fr; }
+    .header h1 { font-size: 28px; }
+    .kpi-value { font-size: 24px; }
+    .impact-hero { grid-template-columns: 1fr; }
+    .impact-tile .impact-num { font-size: 44px; }
+    .cumulative-banner { grid-template-columns: 1fr 1fr; }
+    .cumulative-banner .item:nth-child(2) { border-right: none; }
+    .cumulative-banner .item { border-bottom: 1px solid var(--border); }
+    .spotlight { grid-template-columns: 1fr; }
+    .intro-strip { grid-template-columns: 1fr; }
+    .intro-strip .intro-cta { border-left: none; border-top: 2px solid rgba(255,255,255,0.15); padding-left: 0; padding-top: 16px; }
+  }
+  @media (max-width: 640px) {
+    .page { padding: 20px 14px 40px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .kpi { padding: 12px 14px; }
+    .kpi-value { font-size: 22px; }
+    .current-view { width: 100%; margin-left: 0; }
+    .controls { flex-direction: column; align-items: stretch; }
+    .btn-group { width: 100%; }
+    .btn-group button { flex: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <h1>Youth Sports Giving Day</h1>
+      <div class="sub">Colorado · 2024 vs 2025 results dashboard</div>
+    </div>
+    <div class="meta">
+      <div class="big">Sept. 3–17, 2025</div>
+      <div>Data as of 10/01/2025 · 2024 data as of 10/04/2024</div>
+    </div>
+  </div>
+
+  <div class="intro-strip">
+    <div>
+      <div class="intro-tag">What is Youth Sports Giving Day?</div>
+      <div class="intro-text">
+        A statewide two-week campaign uniting hundreds of nonprofits to keep <strong>more Colorado kids in the game</strong>. A collaboration of <strong>The Daniels Fund</strong> and <strong>Aspen Institute Project Play Colorado</strong>, with matching funds that boost every donation. The 2025 campaign ran <strong>Sept. 3–17</strong>.
+      </div>
+    </div>
+    <div class="intro-cta">
+      <div class="num">$8.8M</div>
+      <div class="lbl">raised across both years</div>
+    </div>
+  </div>
+
+  <div class="impact-hero">
+    <div class="impact-tile kids">
+      <div class="impact-label">★ Kids reached in 2025</div>
+      <div class="impact-num">434,789</div>
+      <div class="impact-context">
+        Equivalent to roughly <strong>1 in 3 Colorado kids under 18</strong> — a statewide footprint that reaches well beyond the Front Range.
+      </div>
+    </div>
+    <div class="impact-tile leverage">
+      <div class="impact-label">⚡ Matching fund leverage</div>
+      <div class="impact-num">3.4×</div>
+      <div class="impact-context">
+        <strong>$1.5M</strong> in matching &amp; incentive funds unlocked <strong>$5.04M</strong> in community giving — every $1 of matching money was multiplied into ~$3.40 of donations from individuals across Colorado.
+      </div>
+      <div class="leverage-bars">
+        <div class="leverage-bar-row">
+          <div class="lbl">Matching fund</div>
+          <div class="bar-track"><div class="bar-fill match" style="width: 30%;">$1.5M</div></div>
+        </div>
+        <div class="leverage-bar-row">
+          <div class="lbl">Total raised</div>
+          <div class="bar-track"><div class="bar-fill raised" style="width: 100%;">$5.04M</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cumulative-banner">
+    <div class="item title-cell">
+      <div class="label">Two-year cumulative</div>
+      <div class="title-big">Since 2024,<br>YSGD has driven</div>
+    </div>
+    <div class="item">
+      <div class="label">Raised</div>
+      <div class="num">$8.8M</div>
+      <div class="sub">$3.77M (2024) + $5.04M (2025)</div>
+    </div>
+    <div class="item">
+      <div class="label">Org-participations</div>
+      <div class="num">422</div>
+      <div class="sub">178 (2024) + 244 (2025)</div>
+    </div>
+    <div class="item">
+      <div class="label">Counties reached</div>
+      <div class="num">29 of 64</div>
+      <div class="sub">~45% of CO counties · 4 new in 2025</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Headline results</div>
+    <div class="kpi-grid">
+      <div class="kpi accent-red">
+        <div class="kpi-label">Total raised</div>
+        <div class="kpi-value">$5.04M</div>
+        <div class="kpi-sub">2024: $3.77M · <span class="up">+34%</span></div>
+      </div>
+      <div class="kpi accent-navy">
+        <div class="kpi-label">Participating orgs</div>
+        <div class="kpi-value">244</div>
+        <div class="kpi-sub">2024: 178 · <span class="up">+37%</span></div>
+      </div>
+      <div class="kpi accent-yellow">
+        <div class="kpi-label">Counties with activity</div>
+        <div class="kpi-value">29</div>
+        <div class="kpi-sub">2024: 25 · <span class="up">+4 counties</span></div>
+      </div>
+      <div class="kpi accent-gray">
+        <div class="kpi-label">Kids impacted (2025)</div>
+        <div class="kpi-value">434,789</div>
+        <div class="kpi-sub">per campaign report</div>
+      </div>
+      <div class="kpi accent-navy">
+        <div class="kpi-label">Individual donations (2025)</div>
+        <div class="kpi-value">3,610</div>
+        <div class="kpi-sub">gifts processed on the platform</div>
+      </div>
+      <div class="kpi accent-red">
+        <div class="kpi-label">Median org (if raised &gt; $0)</div>
+        <div class="kpi-value small">$1.5K → $4.2K</div>
+        <div class="kpi-sub"><span class="up">+179%</span> among active fundraisers</div>
+      </div>
+      <div class="kpi accent-gray">
+        <div class="kpi-label">Orgs raising $0</div>
+        <div class="kpi-value small">41 → 87</div>
+        <div class="kpi-sub">23% → 36% of roster · <span class="down">up 13 pts</span></div>
+      </div>
+      <div class="kpi accent-yellow">
+        <div class="kpi-label">Top-tier orgs ($100K+)</div>
+        <div class="kpi-value small">8 → 15</div>
+        <div class="kpi-sub"><span class="up">+88%</span> · top-end deepening</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">County heatmap</div>
+    <div class="panel">
+      <div class="controls">
+        <div class="btn-group" id="metric-group" role="group" aria-label="Metric">
+          <button data-metric="total" class="active" type="button">Total raised ($)</button>
+          <button data-metric="orgs" type="button"># Organizations</button>
+        </div>
+        <div class="btn-group" id="year-group" role="group" aria-label="Year">
+          <button data-year="2024" type="button">2024</button>
+          <button data-year="2025" class="active" type="button">2025</button>
+        </div>
+        <div class="current-view" id="current-view">Total raised · 2025</div>
+      </div>
+      <div class="map-wrap" id="map-wrap">
+        <div id="map"></div>
+        <div class="tooltip" id="tooltip"></div>
+      </div>
+      <div class="legend" id="legend"></div>
+      <div class="hover-info" id="hover-info">
+        Hover any county for 2024 + 2025 details.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">All counties with activity</div>
+    <div class="panel">
+      <div style="overflow-x: auto;">
+        <table class="county-table" id="county-table">
+          <thead>
+            <tr>
+              <th data-sort="name">County</th>
+              <th data-sort="orgs_2024" class="num">Orgs 2024</th>
+              <th data-sort="total_2024" class="num">Raised 2024</th>
+              <th data-sort="orgs_2025" class="num">Orgs 2025</th>
+              <th data-sort="total_2025" class="num sort-desc">Raised 2025</th>
+              <th data-sort="dollar_change" class="num">YoY Δ</th>
+            </tr>
+          </thead>
+          <tbody id="county-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Spotlight on Routt County</div>
+    <div class="spotlight">
+      <div class="spot-visual">
+        <div class="tag">Year-Over-Year Spotlight</div>
+        <div class="county">Routt</div>
+        <div class="growth">$82K → $300K</div>
+        <div class="arrow">↑</div>
+        <div class="growth"><strong style="color: var(--ysgd-yellow);">+264%</strong> in one year</div>
+      </div>
+      <div class="spot-detail">
+        <h4>A small mountain county, an outsized year</h4>
+        <p>
+          Routt County (Steamboat Springs and the Yampa Valley) shows what's possible when a community rallies around the campaign. With a population of just 25,000 — less than 0.5% of Colorado — Routt's youth sports nonprofits more than tripled their fundraising in 2025, going from $82,000 to nearly $300,000 in two weeks.
+        </p>
+        <p>
+          Their growth wasn't driven by adding many new organizations (just 9 → 11), but by deeper community engagement per org. It's a model for how rural and resort counties can punch well above their weight on YSGD.
+        </p>
+        <div class="spot-stats">
+          <div>
+            <div class="stat-label">Population</div>
+            <div class="stat-val">~25K</div>
+          </div>
+          <div>
+            <div class="stat-label">Participating orgs</div>
+            <div class="stat-val">9 → 11</div>
+          </div>
+          <div>
+            <div class="stat-label">Per-org avg raise</div>
+            <div class="stat-val">$9K → $27K</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Notable shifts</div>
+    <div class="callouts">
+      <div class="callout gains">
+        <div class="callout-title">▲ Biggest gains</div>
+        <ul class="callout-list">
+          <li><span class="name">Denver</span><span class="val pos">+$899K</span></li>
+          <li><span class="name">Arapahoe</span><span class="val pos">+$327K</span></li>
+          <li><span class="name">Routt</span><span class="val pos">+$217K</span></li>
+          <li><span class="name">El Paso</span><span class="val pos">+$207K</span></li>
+          <li><span class="name">Pitkin</span><span class="val pos">+$180K</span></li>
+          <li><span class="name">Douglas</span><span class="val pos">+$107K</span></li>
+          <li><span class="name">Adams</span><span class="val pos">+$125K</span></li>
+        </ul>
+        <div class="callout-footer">Metro and mountain-resort counties drove most of the YoY growth.</div>
+      </div>
+
+      <div class="callout drops">
+        <div class="callout-title">▼ Biggest drops</div>
+        <ul class="callout-list">
+          <li><span class="name">Mesa</span><span class="val neg">−$512K (−72%)</span></li>
+          <li><span class="name">Weld</span><span class="val neg">−$464K (−87%)</span></li>
+          <li><span class="name">Jefferson</span><span class="val neg">−$76K (−13%)</span></li>
+          <li><span class="name">La Plata</span><span class="val neg">−$53K (−51%)</span></li>
+          <li><span class="name">Summit</span><span class="val neg">−$46K (−64%)</span></li>
+          <li><span class="name">Garfield</span><span class="val neg">−$16K (−79%)</span></li>
+        </ul>
+        <div class="callout-footer">Mesa and Weld both had single mega-fundraising organizations in 2024 (GJ Blackout raised $712K) that didn't repeat at the same scale in 2025.</div>
+      </div>
+
+      <div class="callout new">
+        <div class="callout-title">★ First time in 2025</div>
+        <ul class="callout-list">
+          <li><span class="name">Teller</span><span class="val">1 org · $38K</span></li>
+          <li><span class="name">Alamosa</span><span class="val">2 orgs · $17K</span></li>
+          <li><span class="name">Otero</span><span class="val">3 orgs · $4K</span></li>
+          <li><span class="name">Pueblo</span><span class="val">1 org · $0</span></li>
+        </ul>
+        <div class="callout-footer">4 new counties joined in 2025 — geographic expansion into the San Luis Valley, Arkansas Valley, and Pikes Peak region, though dollar totals are still modest.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Fundraising distribution by org</div>
+    <div class="chart-wrap">
+      <div class="chart-legend">
+        <div class="item"><span class="sw" style="background: var(--ysgd-gray);"></span>2024 (137 orgs that raised &gt; $0)</div>
+        <div class="item"><span class="sw" style="background: var(--ysgd-navy);"></span>2025 (157 orgs that raised &gt; $0)</div>
+      </div>
+      <div class="chart-canvas-wrap">
+        <canvas id="distChart" role="img" aria-label="Grouped bar chart showing count of organizations in each fundraising bucket for 2024 and 2025.">Distribution by bucket</canvas>
+      </div>
+      <div style="margin-top: 10px; font-size: 12px; color: var(--text-tertiary); text-align: center; font-style: italic;">
+        Among organizations that raised money, the top tier grew: orgs raising $100K+ went from 8 to 15.
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Colorado Youth Sports Giving Day · A Daniels Fund &amp; Aspen Institute Project Play collaboration ·
+    Source data: <span style="font-family: monospace;">YSGD_Report_by_Nonprofit_10_4_24.xlsx</span> and <span style="font-family: monospace;">YSGD_2025_Summary_by_Member_as_of_10_01_2025.xlsx</span>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  const COUNTY_DATA = [
+    {fips:"08031",name:"Denver",orgs_2024:36,total_2024:836135.59,orgs_2025:45,total_2025:1734799.24},
+    {fips:"08005",name:"Arapahoe",orgs_2024:23,total_2024:256503.75,orgs_2025:32,total_2025:583917.09},
+    {fips:"08059",name:"Jefferson",orgs_2024:16,total_2024:593712.88,orgs_2025:22,total_2025:517530.33},
+    {fips:"08041",name:"El Paso",orgs_2024:11,total_2024:191921.30,orgs_2025:15,total_2025:398584.28},
+    {fips:"08107",name:"Routt",orgs_2024:9,total_2024:82421.78,orgs_2025:11,total_2025:299830.36},
+    {fips:"08001",name:"Adams",orgs_2024:10,total_2024:160410.13,orgs_2025:13,total_2025:285094.91},
+    {fips:"08077",name:"Mesa",orgs_2024:3,total_2024:712760.00,orgs_2025:4,total_2025:200677.83},
+    {fips:"08097",name:"Pitkin",orgs_2024:1,total_2024:515.04,orgs_2025:2,total_2025:180042.19},
+    {fips:"08035",name:"Douglas",orgs_2024:8,total_2024:32055.20,orgs_2025:10,total_2025:139048.50},
+    {fips:"08015",name:"Chaffee",orgs_2024:2,total_2024:1495.67,orgs_2025:2,total_2025:123327.40},
+    {fips:"08013",name:"Boulder",orgs_2024:13,total_2024:51063.18,orgs_2025:17,total_2025:88493.99},
+    {fips:"08123",name:"Weld",orgs_2024:6,total_2024:535632.05,orgs_2025:13,total_2025:71602.49},
+    {fips:"08067",name:"La Plata",orgs_2024:5,total_2024:104797.00,orgs_2025:7,total_2025:51645.74},
+    {fips:"08119",name:"Teller",orgs_2024:0,total_2024:0,orgs_2025:1,total_2025:37892.59},
+    {fips:"08037",name:"Eagle",orgs_2024:2,total_2024:3483.79,orgs_2025:4,total_2025:28598.99},
+    {fips:"08117",name:"Summit",orgs_2024:4,total_2024:72574.98,orgs_2025:4,total_2025:26340.47},
+    {fips:"08105",name:"Rio Grande",orgs_2024:2,total_2024:16048.73,orgs_2025:2,total_2025:23168.43},
+    {fips:"08069",name:"Larimer",orgs_2024:6,total_2024:9477.24,orgs_2025:9,total_2025:20424.59},
+    {fips:"08081",name:"Moffat",orgs_2024:1,total_2024:519.94,orgs_2025:1,total_2025:17487.96},
+    {fips:"08003",name:"Alamosa",orgs_2024:0,total_2024:0,orgs_2025:2,total_2025:17361.27},
+    {fips:"08089",name:"Otero",orgs_2024:0,total_2024:0,orgs_2025:3,total_2025:4275.96},
+    {fips:"08045",name:"Garfield",orgs_2024:4,total_2024:20317.49,orgs_2025:4,total_2025:4273.97},
+    {fips:"08007",name:"Archuleta",orgs_2024:1,total_2024:0,orgs_2025:1,total_2025:3225.04},
+    {fips:"08083",name:"Montezuma",orgs_2024:1,total_2024:0,orgs_2025:1,total_2025:1791.68},
+    {fips:"08014",name:"Broomfield",orgs_2024:4,total_2024:5086.28,orgs_2025:4,total_2025:1716.79},
+    {fips:"08113",name:"San Miguel",orgs_2024:1,total_2024:10399.00,orgs_2025:2,total_2025:32.57},
+    {fips:"08019",name:"Clear Creek",orgs_2024:1,total_2024:0,orgs_2025:1,total_2025:0},
+    {fips:"08051",name:"Gunnison",orgs_2024:2,total_2024:364.50,orgs_2025:2,total_2025:0},
+    {fips:"08101",name:"Pueblo",orgs_2024:0,total_2024:0,orgs_2025:1,total_2025:0}
+  ];
+
+  COUNTY_DATA.forEach(d => {
+    d.dollar_change = d.total_2025 - d.total_2024;
+    d.is_new = d.orgs_2024 === 0 && d.orgs_2025 > 0;
+  });
+
+  const dataByFips = new Map(COUNTY_DATA.map(d => [d.fips, d]));
+
+  const YSGD_NAVY = '#11294d';
+  const YSGD_RED = '#ed1a3b';
+  const YSGD_YELLOW = '#f9ed32';
+  const YSGD_GRAY = '#a5b1bb';
+
+  const RAMP = ['#f2f5f8', '#c5d2df', '#7b97ba', '#3e6590', '#1e416b', '#11294d'];
+
+  let state = { metric: 'total', year: '2025' };
+
+  const mapEl = document.getElementById('map');
+  const legendEl = document.getElementById('legend');
+  const hoverEl = document.getElementById('hover-info');
+  const viewEl = document.getElementById('current-view');
+  const tooltipEl = document.getElementById('tooltip');
+
+  const fmtCurrency = (v) => {
+    if (!v && v !== 0) return '$0';
+    if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+    if (v >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K';
+    return '$' + Math.round(v).toLocaleString();
+  };
+  const fmtCurrencyFull = (v) => '$' + Math.round(v).toLocaleString();
+
+  function getValue(d) {
+    if (!d) return 0;
+    const key = state.metric === 'total' ? ('total_' + state.year) : ('orgs_' + state.year);
+    return d[key];
+  }
+
+  function colorFor(v) {
+    if (!v || v <= 0) return RAMP[0];
+    if (state.metric === 'total') {
+      if (v < 10000) return RAMP[1];
+      if (v < 50000) return RAMP[2];
+      if (v < 150000) return RAMP[3];
+      if (v < 400000) return RAMP[4];
+      return RAMP[5];
+    } else {
+      if (v < 3) return RAMP[1];
+      if (v < 6) return RAMP[2];
+      if (v < 12) return RAMP[3];
+      if (v < 25) return RAMP[4];
+      return RAMP[5];
+    }
+  }
+
+  const width = 900, height = 540;
+  let svg, countiesAll;
+
+  function renderMap() {
+    if (!countiesAll) return;
+    d3.select('#map').selectAll('*').remove();
+
+    const coCounties = countiesAll.features.filter(f => String(f.id).padStart(5, '0').startsWith('08'));
+
+    const proj = d3.geoAlbersUsa().fitSize([width, height - 20], {
+      type: 'FeatureCollection', features: coCounties
+    });
+    const path = d3.geoPath(proj);
+
+    svg = d3.select('#map').append('svg')
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .attr('preserveAspectRatio', 'xMidYMid meet');
+
+    const g = svg.append('g');
+
+    g.selectAll('path')
+      .data(coCounties)
+      .join('path')
+      .attr('d', path)
+      .attr('fill', f => {
+        const d = dataByFips.get(String(f.id).padStart(5, '0'));
+        return colorFor(getValue(d));
+      })
+      .attr('stroke', 'white')
+      .attr('stroke-width', 1)
+      .style('cursor', 'pointer')
+      .style('transition', 'stroke 0.15s, stroke-width 0.15s')
+      .on('mouseenter', function (event, f) {
+        d3.select(this).attr('stroke', YSGD_RED).attr('stroke-width', 2.5).raise();
+      })
+      .on('mousemove', function (event, f) {
+        const d = dataByFips.get(String(f.id).padStart(5, '0'));
+        const countyName = (f.properties && f.properties.name) || 'Unknown';
+        updateHover(countyName, d);
+        showTooltip(event, countyName, d);
+      })
+      .on('mouseleave', function () {
+        d3.select(this).attr('stroke', 'white').attr('stroke-width', 1);
+        hideTooltip();
+        hoverEl.innerHTML = 'Hover any county for 2024 + 2025 details.';
+      });
+
+    const topFips = new Set(
+      [...COUNTY_DATA]
+        .filter(d => getValue(d) > 0)
+        .sort((a, b) => getValue(b) - getValue(a))
+        .slice(0, 10)
+        .map(d => d.fips)
+    );
+
+    g.selectAll('text.county-label')
+      .data(coCounties.filter(f => {
+        const fips = String(f.id).padStart(5, '0');
+        return topFips.has(fips);
+      }))
+      .join('text')
+      .attr('class', 'county-label')
+      .attr('transform', f => `translate(${path.centroid(f)})`)
+      .attr('text-anchor', 'middle')
+      .attr('font-family', 'Montserrat, sans-serif')
+      .attr('font-size', '11px')
+      .attr('font-weight', '700')
+      .attr('fill', f => {
+        const d = dataByFips.get(String(f.id).padStart(5, '0'));
+        const v = getValue(d);
+        return (state.metric === 'total' && v >= 150000) || (state.metric === 'orgs' && v >= 12)
+          ? 'white'
+          : YSGD_NAVY;
+      })
+      .attr('stroke', f => {
+        const d = dataByFips.get(String(f.id).padStart(5, '0'));
+        const v = getValue(d);
+        return (state.metric === 'total' && v >= 150000) || (state.metric === 'orgs' && v >= 12)
+          ? YSGD_NAVY
+          : 'white';
+      })
+      .attr('stroke-width', '2.5')
+      .attr('paint-order', 'stroke')
+      .attr('pointer-events', 'none')
+      .text(f => (f.properties && f.properties.name) || '');
+
+    renderLegend();
+    viewEl.textContent = (state.metric === 'total' ? 'Total raised' : 'Participating orgs') + ' · ' + state.year;
+  }
+
+  function renderLegend() {
+    let labels;
+    if (state.metric === 'total') {
+      labels = ['$0', '<$10K', '<$50K', '<$150K', '<$400K', '$400K+'];
+    } else {
+      labels = ['0', '1–2', '3–5', '6–11', '12–24', '25+'];
+    }
+    legendEl.innerHTML =
+      '<span class="legend-label">' + (state.metric === 'total' ? 'Raised:' : 'Orgs:') + '</span>' +
+      RAMP.map((c, i) =>
+        `<span class="legend-item"><span class="legend-swatch" style="background:${c};"></span>${labels[i]}</span>`
+      ).join('');
+  }
+
+  function updateHover(name, d) {
+    if (!d) {
+      hoverEl.innerHTML = `<span class="county-name">${name} County</span> — no participating organizations in either year.`;
+      return;
+    }
+    const newBadge = d.is_new ? '<span style="background: var(--ysgd-yellow); color: var(--ysgd-navy); padding: 2px 6px; font-size: 10px; font-weight: 900; letter-spacing: 0.05em; border-radius: 3px; margin-left: 8px;">NEW IN 2025</span>' : '';
+    const delta = d.dollar_change;
+    const deltaClass = delta > 0 ? 'up' : (delta < 0 ? 'down' : 'flat');
+    const deltaStr = (delta >= 0 ? '+' : '−') + fmtCurrency(Math.abs(delta));
+    hoverEl.innerHTML = `
+      <span class="county-name">${name} County</span>${newBadge}
+      <span style="display: inline-block; margin-left: 16px;">2024: <strong>${d.orgs_2024}</strong> orgs · <strong>${fmtCurrencyFull(d.total_2024)}</strong></span>
+      <span style="display: inline-block; margin-left: 16px;">2025: <strong>${d.orgs_2025}</strong> orgs · <strong>${fmtCurrencyFull(d.total_2025)}</strong></span>
+      <span style="display: inline-block; margin-left: 16px;">YoY: <strong class="${deltaClass}" style="${delta > 0 ? 'color: var(--success);' : delta < 0 ? 'color: var(--danger);' : ''}">${deltaStr}</strong></span>
+    `;
+  }
+
+  function showTooltip(event, name, d) {
+    if (!d) {
+      tooltipEl.innerHTML = `<div class="tt-name">${name} County</div><div class="tt-row">No activity</div>`;
+    } else {
+      tooltipEl.innerHTML = `
+        <div class="tt-name">${name} County${d.is_new ? ' ★' : ''}</div>
+        <div class="tt-row"><span class="tt-label">2024:</span> <span>${d.orgs_2024} orgs · ${fmtCurrency(d.total_2024)}</span></div>
+        <div class="tt-row"><span class="tt-label">2025:</span> <span>${d.orgs_2025} orgs · ${fmtCurrency(d.total_2025)}</span></div>
+      `;
+    }
+    const wrap = document.getElementById('map-wrap').getBoundingClientRect();
+    const x = event.clientX - wrap.left + 14;
+    const y = event.clientY - wrap.top + 14;
+    tooltipEl.style.left = Math.min(x, wrap.width - 280) + 'px';
+    tooltipEl.style.top = Math.max(y, 10) + 'px';
+    tooltipEl.style.opacity = '1';
+  }
+  function hideTooltip() { tooltipEl.style.opacity = '0'; }
+
+  document.querySelectorAll('#metric-group button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#metric-group button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.metric = btn.dataset.metric;
+      renderMap();
+      renderTable();
+    });
+  });
+  document.querySelectorAll('#year-group button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#year-group button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.year = btn.dataset.year;
+      renderMap();
+    });
+  });
+
+  let tableSort = { key: 'total_2025', dir: 'desc' };
+
+  function renderTable() {
+    const tbody = document.getElementById('county-tbody');
+    const sorted = [...COUNTY_DATA].sort((a, b) => {
+      let av, bv;
+      if (tableSort.key === 'name') {
+        av = a.name; bv = b.name;
+        return tableSort.dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      }
+      av = a[tableSort.key] || 0;
+      bv = b[tableSort.key] || 0;
+      return tableSort.dir === 'asc' ? av - bv : bv - av;
+    });
+    tbody.innerHTML = sorted.map(d => {
+      const deltaStr = d.dollar_change === 0 ? '—' :
+        (d.dollar_change > 0 ? '+' : '−') + fmtCurrency(Math.abs(d.dollar_change));
+      const deltaColor = d.dollar_change > 0 ? 'var(--success)' :
+        (d.dollar_change < 0 ? 'var(--danger)' : 'var(--text-tertiary)');
+      const newBadge = d.is_new ? '<span class="new-badge">NEW</span>' : '';
+      return `<tr>
+        <td class="name">${d.name}${newBadge}</td>
+        <td class="num ${d.orgs_2024 === 0 ? 'zero' : ''}">${d.orgs_2024}</td>
+        <td class="num ${d.total_2024 === 0 ? 'zero' : ''}">${fmtCurrencyFull(d.total_2024)}</td>
+        <td class="num">${d.orgs_2025}</td>
+        <td class="num">${fmtCurrencyFull(d.total_2025)}</td>
+        <td class="num" style="color: ${deltaColor}; font-weight: 500;">${deltaStr}</td>
+      </tr>`;
+    }).join('');
+
+    document.querySelectorAll('.county-table th').forEach(th => {
+      th.classList.remove('sort-asc', 'sort-desc');
+      if (th.dataset.sort === tableSort.key) {
+        th.classList.add(tableSort.dir === 'asc' ? 'sort-asc' : 'sort-desc');
+      }
+    });
+  }
+
+  document.querySelectorAll('.county-table th').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort;
+      if (tableSort.key === key) {
+        tableSort.dir = tableSort.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        tableSort.key = key;
+        tableSort.dir = key === 'name' ? 'asc' : 'desc';
+      }
+      renderTable();
+    });
+  });
+
+  renderTable();
+
+  d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json').then(us => {
+    countiesAll = topojson.feature(us, us.objects.counties);
+    renderMap();
+  }).catch(err => {
+    console.error('Map load failed:', err);
+    document.getElementById('map').innerHTML =
+      '<div style="padding: 3rem; text-align: center; color: var(--text-secondary);">Unable to load county map topology. Please check your internet connection and refresh.</div>';
+  });
+
+  const distLabels = ['$1–$999', '$1K–$5K', '$5K–$10K', '$10K–$25K', '$25K–$50K', '$50K–$100K', '$100K+'];
+  const dist2024 = [58, 26, 8, 13, 14, 10, 8];
+  const dist2025 = [51, 33, 14, 19, 17, 8, 15];
+
+  new Chart(document.getElementById('distChart'), {
+    type: 'bar',
+    data: {
+      labels: distLabels,
+      datasets: [
+        {
+          label: '2024',
+          data: dist2024,
+          backgroundColor: YSGD_GRAY,
+          borderWidth: 0,
+          borderRadius: 2,
+          categoryPercentage: 0.7,
+          barPercentage: 0.9
+        },
+        {
+          label: '2025',
+          data: dist2025,
+          backgroundColor: YSGD_NAVY,
+          borderWidth: 0,
+          borderRadius: 2,
+          categoryPercentage: 0.7,
+          barPercentage: 0.9
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: YSGD_NAVY,
+          titleColor: YSGD_YELLOW,
+          bodyColor: 'white',
+          titleFont: { family: 'Montserrat', weight: '700', size: 13 },
+          bodyFont: { family: 'Montserrat', size: 12 },
+          padding: 10,
+          callbacks: {
+            label: (ctx) => ctx.dataset.label + ': ' + ctx.parsed.y + ' orgs'
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            font: { family: 'Montserrat', size: 11, weight: '500' },
+            color: '#5a6a7a'
+          },
+          title: {
+            display: true,
+            text: 'Amount raised (per organization)',
+            font: { family: 'Montserrat', size: 12, weight: '500' },
+            color: '#5a6a7a',
+            padding: { top: 8 }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: 'rgba(17,41,77,0.06)' },
+          ticks: {
+            stepSize: 10,
+            font: { family: 'Montserrat', size: 11 },
+            color: '#5a6a7a'
+          },
+          title: {
+            display: true,
+            text: 'Number of organizations',
+            font: { family: 'Montserrat', size: 12, weight: '500' },
+            color: '#5a6a7a'
+          }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
