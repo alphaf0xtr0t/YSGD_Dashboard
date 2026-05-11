@@ -573,7 +573,7 @@
   /* Two-year cumulative banner */
   .cumulative-banner {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1.4fr 1fr 1fr;
     gap: 0;
     background: white;
     border: 1px solid var(--border);
@@ -706,6 +706,95 @@
     line-height: 1;
   }
 
+  /* Looking-ahead 2026 banner */
+  .looking-ahead {
+    background: linear-gradient(100deg, var(--ysgd-red) 0%, #c91532 100%);
+    color: white;
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 28px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .looking-ahead::before {
+    content: "";
+    position: absolute;
+    left: -60px;
+    bottom: -60px;
+    width: 220px;
+    height: 220px;
+    background: var(--ysgd-yellow);
+    opacity: 0.10;
+    border-radius: 50%;
+  }
+  .looking-ahead .save-the-date {
+    font-family: 'Anton', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--ysgd-yellow);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .looking-ahead .ahead-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 38px;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .looking-ahead .ahead-detail {
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 540px;
+    color: rgba(255,255,255,0.95);
+    position: relative;
+    z-index: 1;
+  }
+  .looking-ahead .date-block {
+    text-align: center;
+    border: 2px solid var(--ysgd-yellow);
+    border-radius: 8px;
+    padding: 16px 22px;
+    background: rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 1;
+  }
+  .looking-ahead .date-block .month {
+    font-family: 'Anton', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    color: var(--ysgd-yellow);
+  }
+  .looking-ahead .date-block .day {
+    font-family: 'Anton', sans-serif;
+    font-size: 56px;
+    line-height: 0.9;
+    margin: 4px 0;
+  }
+  .looking-ahead .date-block .year {
+    font-family: 'Anton', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: var(--ysgd-yellow);
+  }
+  @media (max-width: 760px) {
+    .looking-ahead {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .looking-ahead .date-block {
+      justify-self: center;
+    }
+  }
+
   /* Tooltip */
   .tooltip {
     position: absolute;
@@ -770,7 +859,6 @@
       <div class="sub">Colorado · 2024 vs 2025 results dashboard</div>
     </div>
     <div class="meta">
-      <div class="big">Sept. 3–17, 2025</div>
       <div>Data as of 10/01/2025 · 2024 data as of 10/04/2024</div>
     </div>
   </div>
@@ -779,13 +867,29 @@
     <div>
       <div class="intro-tag">What is Youth Sports Giving Day?</div>
       <div class="intro-text">
-        A statewide two-week campaign uniting hundreds of nonprofits to keep <strong>more Colorado kids in the game</strong>. A collaboration of <strong>The Daniels Fund</strong> and <strong>Aspen Institute Project Play Colorado</strong>, with matching funds that boost every donation. The 2025 campaign ran <strong>Sept. 3–17</strong>.
+        A statewide two-week campaign uniting hundreds of nonprofits to keep <strong>more Colorado kids in the game</strong>. A collaboration of <strong>The Daniels Fund</strong> and <strong>Aspen Institute Project Play Colorado</strong>, with matching funds that boost every donation.
       </div>
     </div>
     <div class="intro-cta">
       <div class="num">$8.8M</div>
       <div class="lbl">raised across both years</div>
     </div>
+  </div>
+
+  <div class="looking-ahead">
+    <div class="date-block">
+      <div class="month">Sept</div>
+      <div class="day">1</div>
+      <div class="year">2026</div>
+    </div>
+    <div>
+      <div class="save-the-date">★ Save the date</div>
+      <div class="ahead-title">YSGD 2026<br>Kicks off Sept 1</div>
+      <div class="ahead-detail">
+        The third annual Colorado Youth Sports Giving Day launches <strong>September 1, 2026</strong>. Two more weeks to keep building on the momentum — more kids on the field, more communities engaged, more matching funds at work.
+      </div>
+    </div>
+    <div></div>
   </div>
 
   <div class="impact-hero">
@@ -797,15 +901,15 @@
       </div>
     </div>
     <div class="impact-tile leverage">
-      <div class="impact-label">⚡ Matching fund leverage</div>
-      <div class="impact-num">3.4×</div>
+      <div class="impact-label">⚡ Matching fund leverage (2025)</div>
+      <div class="impact-num">2.4×</div>
       <div class="impact-context">
-        <strong>$1.5M</strong> in matching &amp; incentive funds unlocked <strong>$5.04M</strong> in community giving — every $1 of matching money was multiplied into ~$3.40 of donations from individuals across Colorado.
+        <strong>$2.1M</strong> in matching &amp; incentive funds unlocked <strong>$5.04M</strong> in community giving — every $1 of matching money was multiplied into ~$2.40 of donations from individuals across Colorado.
       </div>
       <div class="leverage-bars">
         <div class="leverage-bar-row">
           <div class="lbl">Matching fund</div>
-          <div class="bar-track"><div class="bar-fill match" style="width: 30%;">$1.5M</div></div>
+          <div class="bar-track"><div class="bar-fill match" style="width: 42%;">$2.1M</div></div>
         </div>
         <div class="leverage-bar-row">
           <div class="lbl">Total raised</div>
@@ -824,11 +928,6 @@
       <div class="label">Raised</div>
       <div class="num">$8.8M</div>
       <div class="sub">$3.77M (2024) + $5.04M (2025)</div>
-    </div>
-    <div class="item">
-      <div class="label">Org-participations</div>
-      <div class="num">422</div>
-      <div class="sub">178 (2024) + 244 (2025)</div>
     </div>
     <div class="item">
       <div class="label">Counties reached</div>
@@ -866,14 +965,14 @@
         <div class="kpi-sub">gifts processed on the platform</div>
       </div>
       <div class="kpi accent-red">
-        <div class="kpi-label">Median org (if raised &gt; $0)</div>
+        <div class="kpi-label">Median $ raised</div>
         <div class="kpi-value small">$1.5K → $4.2K</div>
         <div class="kpi-sub"><span class="up">+179%</span> among active fundraisers</div>
       </div>
       <div class="kpi accent-gray">
-        <div class="kpi-label">Orgs raising $0</div>
-        <div class="kpi-value small">41 → 87</div>
-        <div class="kpi-sub">23% → 36% of roster · <span class="down">up 13 pts</span></div>
+        <div class="kpi-label">Orgs raising $25K+</div>
+        <div class="kpi-value small">32 → 40</div>
+        <div class="kpi-sub"><span class="up">+25%</span> · deep-engagement orgs</div>
       </div>
       <div class="kpi accent-yellow">
         <div class="kpi-label">Top-tier orgs ($100K+)</div>
